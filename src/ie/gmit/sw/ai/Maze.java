@@ -16,15 +16,17 @@ public class Maze {
 		addFeature('\u0033', '0', featureNumber); //3 is a bomb, 0 is a hedge
 		addFeature('\u0034', '0', featureNumber); //4 is a hydrogen bomb, 0 is a hedge*/
 		
+		
+		//Creates the enemy spiders
 		featureNumber = (int)((dimension * dimension) * 0.0001); //Change this value to control the number of spiders
-		addFeature('\u0036', '0', featureNumber); //6 is a Black Spider, 0 is a hedge
-		addFeature('\u0037', '0', featureNumber); //7 is a Blue Spider, 0 is a hedge
-		addFeature('\u0038', '0', featureNumber); //8 is a Brown Spider, 0 is a hedge
-		addFeature('\u0039', '0', featureNumber); //9 is a Green Spider, 0 is a hedge
-		addFeature('\u003A', '0', featureNumber); //: is a Grey Spider, 0 is a hedge
-		addFeature('\u003B', '0', featureNumber); //; is a Orange Spider, 0 is a hedge
-		addFeature('\u003C', '0', featureNumber); //< is a Red Spider, 0 is a hedge
-		addFeature('\u003D', '0', featureNumber); //= is a Yellow Spider, 0 is a hedge
+		addEnemy('\u0036', '0', featureNumber); //6 is a Black Spider, 0 is a hedge
+		addEnemy('\u0037', '0', featureNumber); //7 is a Blue Spider, 0 is a hedge
+		addEnemy('\u0038', '0', featureNumber); //8 is a Brown Spider, 0 is a hedge
+		addEnemy('\u0039', '0', featureNumber); //9 is a Green Spider, 0 is a hedge
+		addEnemy('\u003A', '0', featureNumber); //: is a Grey Spider, 0 is a hedge
+		addEnemy('\u003B', '0', featureNumber); //; is a Orange Spider, 0 is a hedge
+		addEnemy('\u003C', '0', featureNumber); //< is a Red Spider, 0 is a hedge
+		addEnemy('\u003D', '0', featureNumber); //= is a Yellow Spider, 0 is a hedge
 	}
 	
 	private void init(){
@@ -35,14 +37,18 @@ public class Maze {
 		}
 	}
 	
-	private void addFeature(char feature, char replace, int number){
+	private void addEnemy(char val, char replace, int number){
+		
 		int counter = 0;
-		while (counter < feature){ //Keep looping until feature number of items have been added
+		while (counter < val){ //Keep looping until feature number of items have been added
 			int row = (int) (maze.length * Math.random());
 			int col = (int) (maze[0].length * Math.random());
 			
 			if (maze[row][col] == replace){
-				maze[row][col] = feature;
+				maze[row][col] = val;
+				
+				new Enemy(new int[] {row, col}).go();
+				
 				counter++;
 			}
 		}

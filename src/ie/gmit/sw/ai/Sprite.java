@@ -20,8 +20,6 @@ public class Sprite {
 		int col = 0;
 		for (int i = 0; i < files.length; i++){
 			
-			System.out.println(i);
-			
 			images[row][col] = ImageIO.read(new File(files[i])); //Read in each image as a BufferedImage
 
 			col++;

@@ -4,13 +4,24 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class EnemySprite extends Sprite{
-	public EnemySprite(String name, int frames, String... images) throws Exception{
-		super(name, frames, images);
-		move();
+public class Enemy{
+	
+	//keep enemy pos
+	int[] pos = new int[2];
+	
+	Enemy(int[] p){
+		this.pos = p;
 	}
 	
-	public void move(){
+	public int[] getPos() {
+		return pos;
+	}
+
+	public void setPos(int[] pos) {
+		this.pos = pos;
+	}
+
+	public void go(){
 		ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 		executor.scheduleAtFixedRate(moveable, 0, 1, TimeUnit.SECONDS);
 	}
@@ -23,5 +34,5 @@ public class EnemySprite extends Sprite{
 	    }
 	    
 	};
-	
+
 }

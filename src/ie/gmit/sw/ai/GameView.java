@@ -62,6 +62,7 @@ public class GameView extends JPanel implements ActionListener{
         		
         		char ch = '0';
        		
+        		//shows a zoomed out version of the map
         		if (zoomOut){
         			ch = maze.get(row, col);
         			if (ch >= '5'){
@@ -72,6 +73,8 @@ public class GameView extends JPanel implements ActionListener{
 	        			}
         				g2.fillRect(x1, y1, size, size);
         			}
+        			
+        		//shows the standard game screen	
         		}else{
         			ch = maze.get(currentRow - cellpadding + row, currentCol - cellpadding + col);
         		}

@@ -1,11 +1,8 @@
 package ie.gmit.sw.ai;
 
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-
-import javax.swing.JFrame;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 public class GameRunner implements KeyListener{
 	private static final int MAZE_DIMENSION = 100;
 	private static final int IMAGE_COUNT = 14;
@@ -102,6 +99,7 @@ public class GameRunner implements KeyListener{
 		player = new ControlledSprite("Main Player", 3, "resources/images/player/d1.png", "resources/images/player/d2.png", "resources/images/player/d3.png", "resources/images/player/l1.png", "resources/images/player/l2.png", "resources/images/player/l3.png", "resources/images/player/r1.png", "resources/images/player/r2.png", "resources/images/player/r3.png");
 		
 		Sprite[] sprites = new Sprite[IMAGE_COUNT];
+
 		sprites[0] = new Sprite("Hedge", 1, "resources/images/objects/hedge.png");
 		sprites[1] = new Sprite("Sword", 1, "resources/images/objects/sword.png");
 		sprites[2] = new Sprite("Help", 1, "resources/images/objects/help.png");
@@ -116,6 +114,7 @@ public class GameRunner implements KeyListener{
 		sprites[11] = new Sprite("Orange Spider", 2, "resources/images/spiders/orange_spider_1.png", "resources/images/spiders/orange_spider_2.png");
 		sprites[12] = new Sprite("Red Spider", 2, "resources/images/spiders/red_spider_1.png", "resources/images/spiders/red_spider_2.png");
 		sprites[13] = new Sprite("Yellow Spider", 2, "resources/images/spiders/yellow_spider_1.png", "resources/images/spiders/yellow_spider_2.png");
+		
 		return sprites;
 	}
 	

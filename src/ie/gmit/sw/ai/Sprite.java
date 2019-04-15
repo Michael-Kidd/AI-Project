@@ -2,6 +2,7 @@ package ie.gmit.sw.ai;
 
 import javax.imageio.*;
 import java.awt.image.*;
+import java.io.File;
 
 public class Sprite {
 	private String name; //The name of this sprite
@@ -18,13 +19,18 @@ public class Sprite {
 		int row = 0;
 		int col = 0;
 		for (int i = 0; i < files.length; i++){
-			images[row][col] = ImageIO.read(new java.io.File(files[i])); //Read in each image as a BufferedImage
+			
+			System.out.println(i);
+			
+			images[row][col] = ImageIO.read(new File("src/"+files[i])); //Read in each image as a BufferedImage
 
 			col++;
+			
 			if (col % frames == 0){
 				row++;
 				col = 0;
-			} 
+			}
+			
 		}
 	}
 	

@@ -22,7 +22,7 @@ public class Sprite {
 			
 			System.out.println(i);
 			
-			images[row][col] = ImageIO.read(new File("src/"+files[i])); //Read in each image as a BufferedImage
+			images[row][col] = ImageIO.read(new File(files[i])); //Read in each image as a BufferedImage
 
 			col++;
 			
@@ -38,7 +38,7 @@ public class Sprite {
 		frame++;
 		if (frame == images[index].length) frame = 0; //Circle back to the start of the array
 
-		return images[index][frame]; 
+		return images[index][frame];
 	}
 	
 	public int getImageIndex(){

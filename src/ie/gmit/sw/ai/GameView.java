@@ -6,7 +6,7 @@ import javax.swing.*;
 public class GameView extends JPanel implements ActionListener{
 	private static final long serialVersionUID = 1L;
 	public static final int DEFAULT_VIEW_SIZE = 800;	
-	private int cellspan = 5;	
+	private int cellspan = 5;
 	private int cellpadding = 2;
 	private Maze maze;
 	private Sprite[] sprites;
@@ -51,12 +51,12 @@ public class GameView extends JPanel implements ActionListener{
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
               
-        cellspan = zoomOut ? maze.size() : 5;         
+        cellspan = zoomOut ? maze.size() : 5;    
         final int size = DEFAULT_VIEW_SIZE/cellspan;
         g2.drawRect(0, 0, GameView.DEFAULT_VIEW_SIZE, GameView.DEFAULT_VIEW_SIZE);
         
         for(int row = 0; row < cellspan; row++) {
-        	for (int col = 0; col < cellspan; col++){  
+        	for (int col = 0; col < cellspan; col++){
         		int x1 = col * size;
         		int y1 = row * size;
         		
@@ -94,6 +94,7 @@ public class GameView extends JPanel implements ActionListener{
 
 	public void actionPerformed(ActionEvent e) {	
 		if (enemy_state < 0 || enemy_state == 5){
+			
 			enemy_state = 6;
 		}else{
 			enemy_state = 5;

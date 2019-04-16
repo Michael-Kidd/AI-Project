@@ -33,10 +33,33 @@ public class Enemy{
 		
 	    public void run() {
 	    	
-	    		fis.setVariable("distance", 10);
+	    		int x2 = 0;
+	    		int y2 = 0;
+	    		
+				try {
+					
+					x2 = GameView.getInstance().getCurrentRow();
+					y2 = GameView.getInstance().getCurrentCol();
+					
+				} catch (Exception e) {
+					return;
+				}
+	    		
+	    		int manhattan_distance =  Math.abs(pos[0] - x2) +  Math.abs(pos[1] - y2);
+	    	
+	    		fis.setVariable("distance", manhattan_distance);
 	    		fis.evaluate();
 	    		
-	    		System.out.println(fis.getVariable("accuracy").getValue());
+	    		//System.out.println(fis.getVariable("accuracy").getValue());
+	    		
+	    		if(manhattan_distance < 2 && manhattan_distance > -2) {
+	    			
+		    		System.out.println(manhattan_distance);
+		    		System.out.println(x2 +" " + y2);
+		    		System.out.println(pos[0] +" " +pos[1]);
+		    		
+	    		}
+	    		
 	    		
 	    		//Move the character and implement the logic
 	    	

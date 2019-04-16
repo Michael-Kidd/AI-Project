@@ -36,11 +36,12 @@ public class GameView extends JPanel implements ActionListener{
     public static GameView getInstance(Maze model) throws Exception 
     { 
     	if (single_instance == null) 
-            single_instance = new GameView(model); 
+            single_instance = new GameView(model);
+    	
         return single_instance; 
     } 
     
-    public static GameView getInstance()
+    public static GameView getInstance() throws Exception
     { 
         return single_instance; 
     } 

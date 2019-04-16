@@ -12,6 +12,12 @@ public class Enemy{
 	int[] pos = new int[2];
 	char val;
 	private FIS fis;
+	
+	Enemy(int[] p, char v){
+		this.pos = p;
+		this.val = v;
+	}
+	
 
 	public void go(){
 		
@@ -45,6 +51,7 @@ public class Enemy{
 					return;
 				}
 	    		
+				//Using manhattan distance to determine how far each spider if from the player
 	    		int manhattan_distance =  Math.abs(pos[0] - x2) +  Math.abs(pos[1] - y2);
 	    	
 	    		fis.setVariable("distance", manhattan_distance);
@@ -52,24 +59,18 @@ public class Enemy{
 	    		
 	    		//System.out.println(fis.getVariable("accuracy").getValue());
 	    		
-	    		if(manhattan_distance < 2 && manhattan_distance > -2) {
+	    		if(manhattan_distance < 5 && manhattan_distance > -5) {
 	    			
-		    		System.out.println(manhattan_distance);
-		    		System.out.println(x2 +" " + y2);
-		    		System.out.println(pos[0] +" " +pos[1]);
+		    		System.out.println(val +" Spider near you " + fis.getVariable("accuracy").getValue());
+		    		
 		    		
 	    		}
-	    		
 	    		
 	    		//Move the character and implement the logic
 	    	
 	    }
 	    
 	};
-
-	Enemy(int[] p, char val){
-		this.pos = p;
-	}
 	
 	public int[] getPos() {
 		return pos;

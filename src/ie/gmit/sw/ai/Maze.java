@@ -47,7 +47,7 @@ public class Maze {
 			if (maze[row][col] == replace){
 				maze[row][col] = val;
 				
-				new Enemy(new int[] {row, col}).go();
+				new Enemy(new int[] {row, col}, val).go();
 				
 				counter++;
 			}

@@ -8,18 +8,7 @@ public class Enemy{
 	
 	//keep enemy pos
 	int[] pos = new int[2];
-	
-	Enemy(int[] p){
-		this.pos = p;
-	}
-	
-	public int[] getPos() {
-		return pos;
-	}
-
-	public void setPos(int[] pos) {
-		this.pos = pos;
-	}
+	char val;
 
 	public void go(){
 		ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
@@ -30,9 +19,38 @@ public class Enemy{
 	Runnable moveable = new Runnable() {
 		
 	    public void run() {
-	        System.out.println("move");
+	    	
+	    	try {
+	    		
+	    		//Move the character and implement the logic
+	    		
+	    	}
+	    	catch(Exception e) {
+	    		
+	    	}
+	    	
 	    }
 	    
 	};
+	
+	public char getVal() {
+		return val;
+	}
+
+	public void setVal(char val) {
+		this.val = val;
+	}
+
+	Enemy(int[] p, char val){
+		this.pos = p;
+	}
+	
+	public int[] getPos() {
+		return pos;
+	}
+	
+	public void setPos(int[] pos) {
+		this.pos = pos;
+	}
 
 }

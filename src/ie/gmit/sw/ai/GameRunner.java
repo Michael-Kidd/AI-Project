@@ -14,7 +14,7 @@ public class GameRunner implements KeyListener{
 	
 	public GameRunner() throws Exception{
 		model = new Maze(MAZE_DIMENSION);
-    	view = new GameView(model);
+    	view = GameView.getInstance(model);
     	
     	Sprite[] sprites = getSprites();
     	view.setSprites(sprites);

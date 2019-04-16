@@ -1,0 +1,37 @@
+FUNCTION_BLOCK spider	// Block definition (there may be more than one block per file)
+
+VAR_INPUT	// Define input variables
+	distance : REAL;
+END_VAR
+
+VAR_OUTPUT
+	accuracy : REAL;
+END_VAR
+
+FUZZIFY distance
+	TERM near := (0,0) (5,1) (10,0);
+	TERM average := (5,0) (10,1) (15,0);
+	TERM far := (10,0) (15,1) (25,0);
+END_FUZZIFY
+
+DEFUZZIFY accuracy
+	TERM high := (10,0) (15,1) (20,0);
+	TERM average := (15,0) (25,1) (30,0);
+	TERM low := (25,0) (30,1) (50,0);
+	
+	METHOD : COG;		// Use 'Center Of Gravity' defuzzification method
+	DEFAULT := 0;		// Default value is 0 (if no rule activates defuzzifier)
+END_DEFUZZIFY
+
+RULEBLOCK No1
+	AND : MIN;			// Use 'min' for 'and' (also implicit use 'max' for 'or' to fulfill DeMorgan's Law)
+	ACT : MIN;			// Use 'min' activation method
+	ACCU : MAX;			// Use 'max' accumulation method
+
+	RULE 1 : IF distance IS near THEN accuracy IS high;
+	RULE 2 : IF distance IS average THEN accuracy IS average;
+	RULE 3 : IF  distance is far THEN accuracy is low;
+	
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK

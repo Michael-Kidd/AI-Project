@@ -9,15 +9,17 @@ public class GameView extends JPanel implements ActionListener{
     private static GameView single_instance = null; 
 	
 	private static final long serialVersionUID = 1L;
-	public static final int DEFAULT_VIEW_SIZE = 800;	
+	public static final int DEFAULT_VIEW_SIZE = 800;
 	private int cellspan = 5;
 	private int cellpadding = 2;
 	private static Maze maze;
 	private Sprite[] sprites;
 	private int enemy_state = 5;
 	private Timer timer;
+
 	private int currentRow;
 	private int currentCol;
+	
 	private boolean zoomOut = false;
 	private int imageIndex = -1;
 	private int offset = 48; //The number 0 is ASCII 48.
@@ -127,5 +129,13 @@ public class GameView extends JPanel implements ActionListener{
 
 	public Maze getMaze() {
 		return maze;
+	}
+	
+	public int getCurrentRow() {
+		return currentRow;
+	}
+
+	public int getCurrentCol() {
+		return currentCol;
 	}
 }

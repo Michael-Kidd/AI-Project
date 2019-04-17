@@ -1,9 +1,9 @@
 package ie.gmit.sw.ai;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import net.sourceforge.jFuzzyLogic.FIS;
 
@@ -12,55 +12,43 @@ public class EnemyThread extends Thread{
 	static ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
 	
 	//keep enemy pos
-	int[] pos = new int[2];
-	char val;
+	private int[] pos = new int[2];
+	private char val;
 	private FIS logic;
+	private String fileName = "resources/fuzzy/logic.fcl";
 	
 	EnemyThread(int[] p, char v){
 		
+		try {
+			
+			fuzzyLogic();
+			
+		} catch (Exception e1) {
+			
+			e1.printStackTrace();
+		
+		}
+		
 		this.pos = p;
-		this.val = v;
-    	
-		String fileName = "resources/fuzzy/logic.fcl";
-		
-		logic = FIS.load(fileName, true);
-		
-		if( logic == null )
-		{
-			System.err.println("Can't load file: '" + fileName + "'");
-			return;
-		}
-	
-		int x2 = 0;
-		int y2 = 0;
+		this.val= v;
 		
 		try {
 			
-			//get players location
-			x2 = GameView.getInstance().getCurrentRow();
-			y2 = GameView.getInstance().getCurrentCol();
+			GameView.getInstance();
 			
-		} catch (Exception e) {
-			System.out.println("here");
-			return;
-		}
-		
-		//Using manhattan distance to determine how far each spider if from the player
-		int manhattan_distance =  Math.abs(pos[0] - x2) +  Math.abs(pos[1] - y2);
-	
-		//set the dstance variable in fuzzy logic to inform of manhattan distance to player
-		logic.setVariable("distance", manhattan_distance);
-		logic.evaluate();
-		
-		
-		try {
+			GameView.getMaze();
 			
-			char[][] matrix= GameView.getInstance().getMaze().getMaze();
-			System.out.println("test");
-			//System.out.println(new BfSearch().pathExists(matrix, pos));
+			char[][] maze = deepCopy(Maze.getMaze());
+		
+			List<Node> test = new Search().getPath(maze, pos[0], pos[1]);
+			
+			if(test.size() != 0)
+			 System.out.println(test.size());
 		
 		} catch (Exception e) {
+			
 			e.printStackTrace();
+			
 		}
 			
 	}
@@ -68,8 +56,9 @@ public class EnemyThread extends Thread{
 	
 	public void move(int row, int col, int newRow, int newCol, char val) throws Exception {
 		System.out.println("moved");
-		GameView.getInstance().setMaze(pos[0], pos[1], '\u0020');
-		GameView.getInstance().setMaze(newRow, newCol, val);
+		GameView.getInstance();
+		GameView.setMaze(pos[0], pos[1], '\u0020');
+		GameView.setMaze(newRow, newCol, val);
 	}
 	
 	public int[] getPos() {
@@ -95,6 +84,48 @@ public class EnemyThread extends Thread{
 	    }
 	    
 	    return result;
+	}
+
+	public char getVal() {
+		return val;
+	}
+
+
+	public void setVal(char val) {
+		this.val = val;
+	}
+	
+	void fuzzyLogic() throws Exception {
+		
+		logic = FIS.load(fileName, true);
+		
+		if( logic == null )
+		{
+			System.err.println("Can't load file: '" + fileName + "'");
+			return;
+		}
+		
+		int manhattan_distance = getDistance();
+		
+		//set the distance variable in fuzzy logic to inform of manhattan distance to player
+		logic.setVariable("distance", manhattan_distance);
+		logic.evaluate();
+		
+	}
+	
+	int getDistance() throws Exception {	
+		int x2 = 0;
+		int y2 = 0;
+		
+		GameView.getInstance();
+		
+		//get players location
+		x2 = GameView.getCurrentRow();
+		y2 = GameView.getCurrentCol();
+		
+		//Using manhattan distance to determine how far each spider if from the player
+		return  Math.abs(pos[0] - x2) +  Math.abs(pos[1] - y2);
+			
 	}
 
 }

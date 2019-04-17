@@ -26,7 +26,9 @@ public class GameView extends JPanel implements ActionListener{
 	private Color[] reds = {new Color(255,160,122), new Color(139,0,0), new Color(255, 0, 0)}; //Animate enemy "dots" to make them easier to see
 	
 	private GameView(Maze maze) throws Exception{
+		
 		GameView.maze = maze;
+		
 		setBackground(Color.LIGHT_GRAY);
 		setDoubleBuffered(true);
 		timer = new Timer(300, this);
@@ -43,7 +45,7 @@ public class GameView extends JPanel implements ActionListener{
     
     public static GameView getInstance() throws Exception
     { 
-        return single_instance; 
+        return single_instance;
     } 
 	
 	public void setCurrentRow(int row) {
@@ -93,19 +95,24 @@ public class GameView extends JPanel implements ActionListener{
         				g2.fillRect(x1, y1, size, size);
         			}
         			
-        		//shows the standard game screen	
+        		//shows the standard game screen
         		}else{
         			ch = maze.get(currentRow - cellpadding + row, currentCol - cellpadding + col);
         		}
         		
         		imageIndex = (int) ch;
         		imageIndex -= offset;
+        		
         		if (imageIndex < 0){
+        			
         			g2.setColor(Color.LIGHT_GRAY);//Empty cell
         			g2.fillRect(x1, y1, size, size);   			
-        		}else{
+        		
+        		}
+        		else{
         			g2.drawImage(sprites[imageIndex].getNext(), x1, y1, null);
         		}
+        		
         	}
         }
 	}

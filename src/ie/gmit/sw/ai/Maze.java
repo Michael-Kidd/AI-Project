@@ -2,8 +2,11 @@ package ie.gmit.sw.ai;
 
 
 public class Maze {
+	
 	private char[][] maze; //An array does not lend itself to the type of mazge generation alogs we use in the labs. There are no "walls" to carve...
+	
 	public Maze(int dimension){
+		
 		maze = new char[dimension][dimension];
 		init();
 		buildMaze();

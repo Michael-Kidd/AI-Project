@@ -1,5 +1,7 @@
 package ie.gmit.sw.ai;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -17,7 +19,6 @@ public class Enemy implements Move{
 		this.pos = p;
 		this.val = v;
 	}
-	
 
 	public void start(){
 		
@@ -27,11 +28,9 @@ public class Enemy implements Move{
 		logic = FIS.load(fileName, true);
 		
 		if( logic == null )
-		{
-			
+		{	
 			System.err.println("Can't load file: '" + fileName + "'");
 			return;
-		
 		}
 		
 		ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
@@ -61,16 +60,25 @@ public class Enemy implements Move{
     	
     		//set the dstance variable in fuzzy logic to inform of manhattan distance to player
     		logic.setVariable("distance", manhattan_distance);
+    		
     		logic.evaluate();
-
+ 
+    		
 			try {
-				moveRight(pos[0], pos[1], val);
 				
+				if(manhattan_distance > 5) {
+					
+		            boolean pathExists = new BfSearch().pathExists(GameView.getInstance().getMaze().getMaze(), pos);
+		            
+		            System.out.println(pathExists ? "YES" : "NO");
+		    		
+				}
+	    		
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
+			
 			}
-
 	    }
 	};
 	
@@ -160,6 +168,6 @@ public class Enemy implements Move{
 	
 	public void setPos(int[] pos) {
 		this.pos = pos;
-	}	
+	}
 
 }

@@ -35,7 +35,7 @@ public class GameView extends JPanel implements ActionListener{
 		timer.start();
 	}
 	
-    public static GameView getInstance(Maze model) throws Exception 
+	public static synchronized GameView getInstance(Maze model) throws Exception 
     { 
     	if (single_instance == null) 
             single_instance = new GameView(model);
@@ -43,7 +43,7 @@ public class GameView extends JPanel implements ActionListener{
         return single_instance; 
     } 
     
-    public static GameView getInstance() throws Exception
+	public static synchronized GameView getInstance() throws Exception
     { 
         return single_instance;
     } 
@@ -102,17 +102,12 @@ public class GameView extends JPanel implements ActionListener{
         		
         		imageIndex = (int) ch;
         		imageIndex -= offset;
-        		
         		if (imageIndex < 0){
-        			
         			g2.setColor(Color.LIGHT_GRAY);//Empty cell
         			g2.fillRect(x1, y1, size, size);   			
-        		
-        		}
-        		else{
+        		}else{
         			g2.drawImage(sprites[imageIndex].getNext(), x1, y1, null);
         		}
-        		
         	}
         }
 	}
@@ -121,7 +116,7 @@ public class GameView extends JPanel implements ActionListener{
 		zoomOut = !zoomOut;		
 	}
 
-	public void actionPerformed(ActionEvent e) {	
+	public void actionPerformed(ActionEvent e) {
 		if (enemy_state < 0 || enemy_state == 5){
 			
 			enemy_state = 6;
@@ -136,7 +131,7 @@ public class GameView extends JPanel implements ActionListener{
 	}
 
 	public Maze getMaze() {
-		return maze;
+			return maze;
 	}
 	
 	public int getCurrentRow() {

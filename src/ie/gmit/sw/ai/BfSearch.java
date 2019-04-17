@@ -14,29 +14,28 @@ class Node {
 
 public class BfSearch{
 	
-	public boolean pathExists(char[][] matrix, int[] pos) {
-        int N = matrix.length;
+	char[][] visited = new char[100][100];
+    
+    public List<Node> pathExists(char[][] matrix, int[] pos) {
         
         List<Node> queue = new ArrayList<Node>();
+        
         queue.add(new Node(pos[0], pos[1]));
-        boolean pathExists = false;
         
         while(!queue.isEmpty()) {
-        	
             Node current = queue.remove(0);
-            
-            if(matrix[current.x][current.y] == '5'){
-                pathExists = true;
-                break;
+            if(matrix[current.x][current.y] == '5') {
+                
+            	return queue;
             }
             
-            matrix[current.x][current.y] = '0'; // mark as visited
+            visited[current.x][current.y] = '0'; // mark as visited
             
             List<Node> neighbors = getNeighbors(matrix, current);
             queue.addAll(neighbors);
         }
         
-        return pathExists;
+        return queue;
     }
     
     public List<Node> getNeighbors(char[][] matrix, Node node) {
@@ -62,7 +61,7 @@ public class BfSearch{
     }
     
     public boolean isValidPoint(char[][] matrix, int x, int y) {
-        return !(x < 0 || x >= matrix.length || y < 0 || y >= matrix.length) && (matrix[x][y] != '0');
+        return !(x < 0 || x >= matrix.length || y < 0 || y >= matrix.length) && (visited[x][y] != '0');
     }
 	
 }

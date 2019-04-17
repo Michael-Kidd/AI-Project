@@ -1,5 +1,7 @@
 package ie.gmit.sw.ai;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Maze {
 	
@@ -50,8 +52,6 @@ public class Maze {
 			if (maze[row][col] == replace){
 				
 				maze[row][col] = val;
-				
-				new Enemy(new int[] {row, col}, val).start();
 				
 				counter++;
 			}

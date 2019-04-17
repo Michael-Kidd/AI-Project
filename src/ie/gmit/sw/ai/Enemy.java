@@ -60,17 +60,14 @@ public class Enemy{
 	    		//System.out.println(fis.getVariable("accuracy").getValue());
 	    		
 	    		if(manhattan_distance < 5 && manhattan_distance > -5) {
-	    			
-		    		System.out.println(val +" Spider near you " + fis.getVariable("accuracy").getValue());
-		    		
-		    		
+
 	    		}
 	    		
-	    		//Move the character and implement the logic
 	    	
 	    }
 	    
 	};
+	
 	
 	public int[] getPos() {
 		return pos;
@@ -78,6 +75,6 @@ public class Enemy{
 	
 	public void setPos(int[] pos) {
 		this.pos = pos;
-	}
+	}	
 
 }

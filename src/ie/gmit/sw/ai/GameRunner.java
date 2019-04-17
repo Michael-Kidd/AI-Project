@@ -3,6 +3,8 @@ package ie.gmit.sw.ai;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
+
 public class GameRunner implements KeyListener{
 	private static final int MAZE_DIMENSION = 100;
 	private static final int IMAGE_COUNT = 14;
@@ -50,6 +52,9 @@ public class GameRunner implements KeyListener{
 	}
 
     public void keyPressed(KeyEvent e) {
+
+
+		
         if (e.getKeyCode() == KeyEvent.VK_RIGHT && currentCol < MAZE_DIMENSION - 1) {
         	if (isValidMove(currentRow, currentCol + 1)){
 				player.setDirection(Direction.RIGHT);
@@ -126,4 +131,5 @@ public class GameRunner implements KeyListener{
 	public static void main(String[] args) throws Exception{
 		new GameRunner();
 	}
+	
 }

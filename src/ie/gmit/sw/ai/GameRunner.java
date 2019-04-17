@@ -15,6 +15,7 @@ public class GameRunner implements KeyListener{
 	private int currentCol;
 	
 	public GameRunner() throws Exception{
+		
 		model = new Maze(MAZE_DIMENSION);
     	view = GameView.getInstance(model);
     	

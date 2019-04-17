@@ -139,4 +139,8 @@ public class GameView extends JPanel implements ActionListener{
 	public int getCurrentCol() {
 		return currentCol;
 	}
+
+	public void setMaze(int row, int col, char c) {
+		maze.set(row, col, c);
+	}
 }

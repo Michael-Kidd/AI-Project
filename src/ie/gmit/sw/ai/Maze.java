@@ -45,9 +45,10 @@ public class Maze {
 			int col = (int) (maze[0].length * Math.random());
 			
 			if (maze[row][col] == replace){
+				
 				maze[row][col] = val;
 				
-				new Enemy(new int[] {row, col}, val).go();
+				new Enemy(new int[] {row, col}, val).start();
 				
 				counter++;
 			}

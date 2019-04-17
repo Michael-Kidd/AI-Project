@@ -1,7 +1,5 @@
 package ie.gmit.sw.ai;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class Maze {
 	
@@ -13,14 +11,13 @@ public class Maze {
 		init();
 		buildMaze();
 		
-		int featureNumber = (int)((dimension * dimension) * 0.001); //Change this value to control the number of objects
+		int featureNumber = (int)((dimension * dimension) * 0.0001); //Change this value to control the number of objects
 		
 		//Removed the objects as I don't intend to use them
 		/*addFeature('\u0031', '0', featureNumber); //1 is a sword, 0 is a hedge
 		addFeature('\u0032', '0', featureNumber); //2 is help, 0 is a hedge
 		addFeature('\u0033', '0', featureNumber); //3 is a bomb, 0 is a hedge
 		addFeature('\u0034', '0', featureNumber); //4 is a hydrogen bomb, 0 is a hedge*/
-		
 		
 		//Creates the enemy spiders
 		featureNumber = (int)((dimension * dimension) * 0.0001); //Change this value to control the number of spiders
@@ -52,6 +49,11 @@ public class Maze {
 			if (maze[row][col] == replace){
 				
 				maze[row][col] = val;
+				
+				int[] pos = {row, col};
+				
+				EnemyThread et = new EnemyThread(pos, val);
+				et.start();
 				
 				counter++;
 			}

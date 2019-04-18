@@ -22,13 +22,13 @@ public class Maze {
 		//Creates the enemy spiders
 		featureNumber = (int)((dimension * dimension) * 0.000001); //Change this value to control the number of spiders
 		addEnemy('\u0036', '0', featureNumber); //6 is a Black Spider, 0 is a hedge
-		addEnemy('\u0037', '0', featureNumber); //7 is a Blue Spider, 0 is a hedge
+		/*addEnemy('\u0037', '0', featureNumber); //7 is a Blue Spider, 0 is a hedge
 		addEnemy('\u0038', '0', featureNumber); //8 is a Brown Spider, 0 is a hedge
 		addEnemy('\u0039', '0', featureNumber); //9 is a Green Spider, 0 is a hedge
 		addEnemy('\u003A', '0', featureNumber); //: is a Grey Spider, 0 is a hedge
 		addEnemy('\u003B', '0', featureNumber); //; is a Orange Spider, 0 is a hedge
 		addEnemy('\u003C', '0', featureNumber); //< is a Red Spider, 0 is a hedge
-		addEnemy('\u003D', '0', featureNumber); //= is a Yellow Spider, 0 is a hedge
+		addEnemy('\u003D', '0', featureNumber); //= is a Yellow Spider, 0 is a hedge*/
 	}
 	
 	private void init(){

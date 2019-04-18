@@ -15,19 +15,32 @@ class Node {
 class FindPlayer
 {  
 	
-	private char[][] visited = new char[100][100];
+	protected boolean[][] visited = new boolean[100][100];
+	protected List<Node> queue = new ArrayList<Node>();
 	
     public List<Node> find(char[][] matrix, int row, int col) {
-        
-        List<Node> queue = new ArrayList<Node>();
         
         Node currentNode = new Node(row, col);
         
         queue.add(currentNode);
         
-        queue.addAll(getNeighbors(matrix, currentNode));
+        while(!queue.isEmpty()) {
+        	
+        	currentNode = queue.remove(0);
+        	
+        	System.out.println(queue.size());
+        	
+        	visited[currentNode.x][currentNode.y] = true;
+        	
+        	if(matrix[currentNode.x][currentNode.y] == '5') {
+        		return this.queue;
+        	}
+        	
+        	queue.addAll(getNeighbors(matrix, currentNode));
+        	
+        }
 
-        return queue;
+        return this.queue;
 
     }
     
@@ -54,14 +67,7 @@ class FindPlayer
     }
     
     public boolean isValidPoint(char[][] matrix, int x, int y) {
-        return !(x < 0 || x >= matrix.length || y < 0 || y >= matrix.length) && (matrix[x][y] != '0');
+        return !(x < 0 || x >= matrix.length || y < 0 || y >= matrix.length) && (matrix[x][y] != '0') && (!visited[x][y]);
     }
 
-	public char[][] getVisited() {
-		return visited;
-	}
-
-	public void setVisited(char[][] visited) {
-		this.visited = visited;
-	}
 }

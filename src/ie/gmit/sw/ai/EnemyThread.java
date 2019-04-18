@@ -37,13 +37,17 @@ public class EnemyThread extends Thread{
 				public void run() {
 					
 					try {
+						
 						findPath();
+					
 					} 
 					catch (Exception e) {
+						
 					}
 					
 				}
-			}, 0, 1, TimeUnit.SECONDS);
+				
+			}, 1, 2, TimeUnit.SECONDS);
 			
 	}
 	
@@ -54,19 +58,22 @@ public class EnemyThread extends Thread{
 		
 		char[][] matrix = Maze.getMaze();
 		
-		List<Node> test = new FindPlayer().find(matrix, pos[0], pos[1]);
+		List<Node> nodes = new FindPlayer().find(matrix, pos[0], pos[1]);
 
-		move(pos[0], pos[1], test.get(1).x, test.get(1).y, val);
+		move(pos[0], pos[1], nodes, val);
 
 	}
         
-	
-	public void move(int row, int col, int newRow, int newCol, char val) throws Exception {
+	public void move(int row, int col, List<Node> nodes, char val) throws Exception {
 		
 		GameView.getInstance();
 		
+		int newRow = nodes.get(nodes.size()-1).x;
+		int newCol = nodes.get(nodes.size()-1).y;
+		
 		GameView.setMaze(pos[0], pos[1], '\u0020');
 		GameView.setMaze(newRow, newCol, val);
+		
 		pos[0] = newRow;
 		pos[1]= newCol;
 		

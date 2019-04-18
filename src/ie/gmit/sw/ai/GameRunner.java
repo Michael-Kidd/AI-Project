@@ -87,6 +87,7 @@ public class GameRunner implements KeyListener{
 	public void keyTyped(KeyEvent e) {} //Ignore
    
 	private boolean isValidMove(int row, int col){
+		
 		if (row <= model.size() - 1 && col <= model.size() - 1 && model.get(row, col) == ' '){
 			model.set(currentRow, currentCol, '\u0020');
 			model.set(row, col, '5');

@@ -5,8 +5,8 @@ import java.awt.event.*;
 import javax.swing.*;
 public class GameView extends JPanel implements ActionListener{
 	
-	// static variable single_instance of type Singleton 
-    private static volatile GameView single_instance = null; 
+	// static variable single_instance of type Singleton
+    private static volatile GameView single_instance = null;
 	
 	private static final long serialVersionUID = 1L;
 	public static final int DEFAULT_VIEW_SIZE = 800;
@@ -35,19 +35,18 @@ public class GameView extends JPanel implements ActionListener{
 		timer.start();
 	}
 	
-	public static synchronized GameView getInstance(Maze model) throws Exception 
-    { 
+	public static synchronized GameView getInstance(Maze model) throws Exception
+    {
 
 		if (single_instance == null) {
 		    single_instance = new GameView(model);
 		}
 		
-		return single_instance; 
+		return single_instance;
     } 
 	
 	public static synchronized GameView getInstance() throws Exception
     {
-
         	return single_instance;
     } 
 	
@@ -72,6 +71,7 @@ public class GameView extends JPanel implements ActionListener{
 	}
 
 	public void paintComponent(Graphics g) {
+		
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
               
@@ -99,7 +99,7 @@ public class GameView extends JPanel implements ActionListener{
         			}
         			
         		//shows the standard game screen
-        		}else{
+        		} else {
         			ch = maze.get(currentRow - cellpadding + row, currentCol - cellpadding + col);
         		}
         		
@@ -126,6 +126,7 @@ public class GameView extends JPanel implements ActionListener{
 		}else{
 			enemy_state = 5;
 		}
+
 		this.repaint();
 	}
 	

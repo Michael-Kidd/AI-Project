@@ -1,15 +1,14 @@
 package ie.gmit.sw.ai;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import net.sourceforge.jFuzzyLogic.FIS;
 
 public class EnemyThread extends Thread{
 
-	static ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
+	ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
 	
 	//keep enemy pos
 	private int[] pos = new int[2];
@@ -32,31 +31,33 @@ public class EnemyThread extends Thread{
 		this.pos = p;
 		this.val= v;
 		
-		try {
+			exec.scheduleWithFixedDelay(new Runnable() {
+				@Override
+				public void run() {
+					
+					try {
+						findPath();
+					} 
+					catch (Exception e) {
+					}
+					
+				}
+			}, 0, 1, TimeUnit.SECONDS);
 			
-			GameView.getInstance();
-			
-			GameView.getMaze();
-			
-			char[][] maze = deepCopy(Maze.getMaze());
+	}
+	
+	public void findPath() throws Exception {
 		
-			List<Node> test = new Search().getPath(maze, pos[0], pos[1]);
-			
-			if(test.size() != 0)
-			 System.out.println(test.size());
+		Search.getInstance();
+		System.out.println(Search.findPlayer(pos[0], pos[1]).get(1) );
 		
-		} catch (Exception e) {
-			
-			e.printStackTrace();
-			
-		}
-			
 	}
         
 	
 	public void move(int row, int col, int newRow, int newCol, char val) throws Exception {
-		System.out.println("moved");
+		
 		GameView.getInstance();
+		
 		GameView.setMaze(pos[0], pos[1], '\u0020');
 		GameView.setMaze(newRow, newCol, val);
 	}
@@ -67,23 +68,6 @@ public class EnemyThread extends Thread{
 	
 	public void setPos(int[] pos) {
 		this.pos = pos;
-	}
-	
-	public static char[][] deepCopy(char[][] original) {
-		
-	    if (original == null) {
-	        return null;
-	    }
-
-	    final char[][] result = new char[original.length][];
-	    
-	    for (int i = 0; i < original.length; i++) {
-	    	
-	        result[i] = Arrays.copyOf(original[i], original[i].length);
-
-	    }
-	    
-	    return result;
 	}
 
 	public char getVal() {

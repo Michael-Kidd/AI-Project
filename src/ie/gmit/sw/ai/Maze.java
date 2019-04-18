@@ -80,7 +80,7 @@ public class Maze {
 		return row > 1 && maze[row - 1][col] == '\u0020' && maze[row - 1][col + 1] == '\u0020';
 	}
 	
-	public static synchronized char[][] getMaze(){
+	public static char[][] getMaze(){
 		return maze;
 	}
 	

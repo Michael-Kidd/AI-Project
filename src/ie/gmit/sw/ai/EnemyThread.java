@@ -54,9 +54,10 @@ public class EnemyThread extends Thread{
 		
 		char[][] matrix = Maze.getMaze();
 		
-		new Search().printMatrix(matrix);
+		List<Node> test = new FindPlayer().find(matrix, pos[0], pos[1]);
 
-		
+		move(pos[0], pos[1], test.get(1).x, test.get(1).y, val);
+
 	}
         
 	
@@ -66,6 +67,9 @@ public class EnemyThread extends Thread{
 		
 		GameView.setMaze(pos[0], pos[1], '\u0020');
 		GameView.setMaze(newRow, newCol, val);
+		pos[0] = newRow;
+		pos[1]= newCol;
+		
 	}
 	
 	public int[] getPos() {

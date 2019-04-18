@@ -3,7 +3,7 @@ package ie.gmit.sw.ai;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-public class GameView extends JPanel implements ActionListener{
+public class GameView extends JPanel implements ActionListener {
 	
 	// static variable single_instance of type Singleton
     private static volatile GameView single_instance = null;
@@ -70,7 +70,7 @@ public class GameView extends JPanel implements ActionListener{
 		}
 	}
 
-	public void paintComponent(Graphics g) {
+	public synchronized void paintComponent(Graphics g) {
 		
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;

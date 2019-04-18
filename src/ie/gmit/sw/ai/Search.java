@@ -1,47 +1,22 @@
 package ie.gmit.sw.ai;
 
 
-import java.util.List;
-
-class Node {
-    int x;
-    int y;
-    
-    Node(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-}
-
 public class Search{
-	
-	// static variable single_instance of type Singleton
-    private static volatile Search single_instance = null;
 
-	public static synchronized Search getInstance() throws Exception
-	{
 	
-		if (single_instance == null) {
-		    single_instance = new Search();
+	//for testing that the Treads can sync the maze
+	public void printMatrix(char[][] matrix) {
+		
+		for(int i = 0; i < matrix[1].length; i++) {
+			
+			for(int j = 0; j < matrix[1].length; j++) {
+				System.out.println(matrix[i][j]);
+			}
+			
 		}
 		
-		return single_instance; 
-	} 
+	}
+	
 
-    public static List<Node> findPlayer(int spiderRow, int spiderCol) throws Exception {
-    	
-		GameView.getInstance();
-		
-		int playerRow = GameView.getCurrentRow();
-		int playerCol = GameView.getCurrentCol();
-		
-		GameView.getMaze();
-		char[][] matrix = Maze.getMaze();
-		
-		
-		
-		return null;
-      
-    }
 	
 }

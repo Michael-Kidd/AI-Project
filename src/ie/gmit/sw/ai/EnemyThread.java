@@ -1,5 +1,6 @@
 package ie.gmit.sw.ai;
 
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -48,8 +49,13 @@ public class EnemyThread extends Thread{
 	
 	public void findPath() throws Exception {
 		
-		Search.getInstance();
-		System.out.println(Search.findPlayer(pos[0], pos[1]).get(1) );
+		GameView.getInstance();
+		GameView.getMaze();
+		
+		char[][] matrix = Maze.getMaze();
+		
+		new Search().printMatrix(matrix);
+
 		
 	}
         

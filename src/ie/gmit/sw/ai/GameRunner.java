@@ -5,7 +5,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 
-public class GameRunner implements KeyListener{
+public class GameRunner extends Thread implements KeyListener{
 	private static final int MAZE_DIMENSION = 100;
 	private static final int IMAGE_COUNT = 14;
 	private ControlledSprite player;
@@ -129,7 +129,9 @@ public class GameRunner implements KeyListener{
 	}
 	
 	public static void main(String[] args) throws Exception{
-		new GameRunner();
+		
+		new Thread(new GameRunner());
+	
 	}
 	
 }

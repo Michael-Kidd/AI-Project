@@ -12,14 +12,14 @@ class Node {
     }
 }
 
-class FindPlayer
+public class FindPlayer
 {  
-	
-	protected boolean[][] visited = new boolean[100][100];
-	protected List<Node> queue = new ArrayList<Node>();
+	private boolean[][] visited = new boolean[100][100];
 	
     public List<Node> find(char[][] matrix, int row, int col) {
-        
+    	
+    	List<Node> queue = new ArrayList<Node>();
+    	
         Node currentNode = new Node(row, col);
         
         queue.add(currentNode);
@@ -33,14 +33,14 @@ class FindPlayer
         	visited[currentNode.x][currentNode.y] = true;
         	
         	if(matrix[currentNode.x][currentNode.y] == '5') {
-        		return this.queue;
+        		return queue;
         	}
         	
         	queue.addAll(getNeighbors(matrix, currentNode));
         	
         }
 
-        return this.queue;
+        return queue;
 
     }
     

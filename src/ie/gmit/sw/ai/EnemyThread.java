@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.JOptionPane;
 
 import net.sourceforge.jFuzzyLogic.FIS;
+import net.sourceforge.jFuzzyLogic.FunctionBlock;
 
 public class EnemyThread extends Thread{
 
@@ -53,25 +54,31 @@ public class EnemyThread extends Thread{
 	
 	protected void attack() {
 		
-		FIS damageLogic = FIS.load("resources/fuzzy/damageLogic.fcl", true);
+		FIS file = FIS.load("resources/fuzzy/damageLogic.fcl", true);
 		
-		damageLogic.setVariable("attack", strength);
+		file.setVariable("attack", strength);
 		
-		if(venom < 0)
-			damageLogic.setVariable("venom", venom);
-		else
-			damageLogic.setVariable("venom", 0);
+		file.evaluate();
 		
-		damageLogic.evaluate();
+		double attack = file.getVariable("damage").getValue();
 		
-		int damage = (int)damageLogic.getVariable("damage").getValue();
+		file.setVariable("venom", venom);
 		
+		file.evaluate();
+		
+		double potency = file.getVariable("potency").getValue();
+		
+		file.setVariable("damageOutput", attack);
+		
+		file.setVariable("potencyOfVenom", potency);
+		
+		file.evaluate();
+		
+		int damage = (int)file.getVariable("damageDealt").getValue();
+	
 		try {
 		
 			ControlledSprite.getInstance().setHealth(ControlledSprite.getInstance().getHealth() - damage);
-			
-			if(venom > 0)
-				venom -= damage;
 			
 			JOptionPane.showMessageDialog(null, getSpidertype() +" Spider Dealt " + damage + " damage"
 					+ "\nYou have " +ControlledSprite.getInstance().getHealth() +" Health left");
@@ -79,7 +86,6 @@ public class EnemyThread extends Thread{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 		
 
 	}

@@ -5,14 +5,26 @@ import java.util.List;
 
 public class ByDistance {
 	
-    public Node find(char[][] matrix, int row, int col) {
+    public Node find(char[][] matrix, int row, int col) throws Exception {
 
+    	List<Node> queue = new ArrayList<Node>();
     	
+        Node currentNode = new Node(row, col);
+        
+        queue.addAll(getNeighbors(matrix, currentNode));   	
     	
-        return new Node(row, col);
+    	for (Node n : queue) {
+    		
+	    	if(getDistance(n) <  getDistance(currentNode)) {
+	    		currentNode = n;
+	    	}
+	    	
+    	}
+    	
+        return currentNode;
     }
 	
-	int getDistance(int[] pos) throws Exception {
+	int getDistance(Node currentNode) throws Exception {
 		
 		int x2 = 0;
 		int y2 = 0;
@@ -24,7 +36,7 @@ public class ByDistance {
 		y2 = GameView.getCurrentCol();
 		
 		//Using Manhattan distance to determine how far each spider if from the player
-		return  Math.abs(pos[0] - x2) +  Math.abs(pos[1] - y2);
+		return  Math.abs(currentNode.x - x2) +  Math.abs(currentNode.y - y2);
 			
 	}
 	
@@ -32,14 +44,18 @@ public class ByDistance {
     	
         List<Node> neighbors = new ArrayList<Node>();
         
-        neighbors.add(new Node(node.x - 1, node.y));
-
-        neighbors.add(new Node(node.x + 1, node.y));
-
-        neighbors.add(new Node(node.x, node.y - 1));
-
-        neighbors.add(new Node(node.x, node.y + 1));
+        if(matrix[node.x - 1][node.y] == '\u0020')
+        	neighbors.add(new Node(node.x - 1, node.y));
         
+        if(matrix[node.x + 1][node.y] == '\u0020')
+        	neighbors.add(new Node(node.x + 1, node.y));
+        
+        if(matrix[node.x][node.y - 1] == '\u0020')
+        	neighbors.add(new Node(node.x, node.y - 1));
+        
+        if(matrix[node.x - 1][node.y + 1] == '\u0020')
+        	neighbors.add(new Node(node.x, node.y + 1));
+
         return neighbors;
         
     }

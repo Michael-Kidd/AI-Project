@@ -1,6 +1,6 @@
 package ie.gmit.sw.ai;
 
-import java.util.List;
+
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -27,10 +27,7 @@ public class EnemyThread extends Thread{
 				public void run() {
 					
 					try {
-						
-						fuzzyLogic();
-						findPath();
-					
+						findPlayer();
 					} 
 					catch (Exception e) {
 						
@@ -38,33 +35,48 @@ public class EnemyThread extends Thread{
 					
 				}
 				
-			}, 1, 2, TimeUnit.SECONDS);
+			}, 0, 2, TimeUnit.SECONDS);
 			
 	}
 	
-	public void findPath() throws Exception {
+	public void findPlayer() throws Exception {
 		
 		GameView.getInstance();
 		GameView.getMaze();
 		
 		char[][] matrix = Maze.getMaze();
 		
-		List<Node> nodes = new FindPlayer().find(matrix, pos[0], pos[1]);
+		Node node = null;
+		
+		switch(val) {
+			case '7':
+				
+		       node = new Search().findPath(matrix, pos[0], pos[1]);
+		        
+	        break;
+			case '6':
+				//Black Spider test their neighbour blocks to see which one is closer to the player 
+				//move accordingly
+				node = new ByDistance().find(matrix, pos[0], pos[1]);
+				break;
+			default:
+				System.out.println("test");
+		}
 
-		move(pos[0], pos[1], nodes, val);
-
+		move(pos[0], pos[1], node, val);
+		
 	}
         
-	public void move(int row, int col, List<Node> nodes, char val) throws Exception {
+	public void move(int row, int col, Node node, char val) throws Exception {
 		
 		GameView.getInstance();
 		
-		int newRow = nodes.get(nodes.size()-1).x;
-		int newCol = nodes.get(nodes.size()-1).y;
+		int newRow = node.x;
+		int newCol = node.y;
 		
 		GameView.setMaze(pos[0], pos[1], '\u0020');
 		GameView.setMaze(newRow, newCol, val);
-		
+
 		pos[0] = newRow;
 		pos[1]= newCol;
 		

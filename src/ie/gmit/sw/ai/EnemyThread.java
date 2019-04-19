@@ -47,17 +47,33 @@ public class EnemyThread extends Thread{
 		char[][] matrix = Maze.getMaze();
 		
 		Node node = null;
-		
+
 		switch(val) {
-			case '7':
+			case '=':
 				
-		       node = new Search().findPath(matrix, pos[0], pos[1]);
-		        
+			break;
+			case '<':
+			
+				break;
+			case ';':
+			
+				break;
+			case ':':
+			
+				break;
+			case '9':
+			
+				break;
+			case '8':
+			
+				break;
+			case '7':
+				node = new Search().findPath(matrix, pos[0], pos[1]);
 	        break;
 			case '6':
 				//Black Spider test their neighbour blocks to see which one is closer to the player 
 				//move accordingly
-				node = new ByDistance().find(matrix, pos[0], pos[1]);
+				node = new ManhattanDistance().find(matrix, pos[0], pos[1]);
 				break;
 			default:
 				System.out.println("test");

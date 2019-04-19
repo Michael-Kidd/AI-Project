@@ -17,28 +17,49 @@ public class EnemyThread extends Thread{
 	private FIS logic;
 	private String fileName = "resources/fuzzy/logic.fcl";
 	
+	
 	EnemyThread(int[] p, char v){
+		
+		logic = FIS.load(fileName, true);
 		
 		this.pos = p;
 		this.val= v;
 		
-			exec.scheduleWithFixedDelay(new Runnable() {
-				@Override
-				public void run() {
+		
+		exec.scheduleWithFixedDelay(new Runnable() {
+			@Override
+			public void run() {
+				
+				try {
 					
-					try {
-						findPlayer();
-					} 
-					catch (Exception e) {
-						
+					if( new ManhattanDistance().getDistance(new Node(pos[0], pos[1])) == 1 ){
+						attack(20);
 					}
+					else 
+					{
+						findPlayer();
+					}
+				}
+				catch (Exception e) {
 					
 				}
 				
-			}, 0, 2, TimeUnit.SECONDS);
+			}
 			
+		}, 0, 2, TimeUnit.SECONDS);
+		
 	}
 	
+	protected void attack(int val) {
+		
+		logic.setVariable("attack", val);
+		logic.evaluate();
+		
+		int damage = (int)logic.getVariable("damage").getValue();
+		
+		System.out.println("attack " +damage);
+	}
+
 	public void findPlayer() throws Exception {
 		
 		GameView.getInstance();
@@ -48,36 +69,7 @@ public class EnemyThread extends Thread{
 		
 		Node node = null;
 
-		switch(val) {
-			case '=':
-				
-			break;
-			case '<':
-			
-				break;
-			case ';':
-			
-				break;
-			case ':':
-			
-				break;
-			case '9':
-			
-				break;
-			case '8':
-			
-				break;
-			case '7':
-				node = new Search().findPath(matrix, pos[0], pos[1]);
-	        break;
-			case '6':
-				//Black Spider test their neighbour blocks to see which one is closer to the player 
-				//move accordingly
-				node = new ManhattanDistance().find(matrix, pos[0], pos[1]);
-				break;
-			default:
-				System.out.println("test");
-		}
+		node = new ManhattanDistance().find(matrix, pos[0], pos[1]);
 
 		move(pos[0], pos[1], node, val);
 		
@@ -113,24 +105,6 @@ public class EnemyThread extends Thread{
 
 	public void setVal(char val) {
 		this.val = val;
-	}
-	
-	void fuzzyLogic() throws Exception {
-		
-		logic = FIS.load(fileName, true);
-		
-		if( logic == null )
-		{
-			System.err.println("Can't load file: '" + fileName + "'");
-			return;
-		}
-		
-		int manhattan_distance = getDistance();
-		
-		//set the distance variable in fuzzy logic to inform of manhattan distance to player
-		logic.setVariable("distance", manhattan_distance);
-		logic.evaluate();
-		
 	}
 	
 	int getDistance() throws Exception {	

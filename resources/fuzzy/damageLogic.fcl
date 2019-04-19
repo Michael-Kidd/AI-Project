@@ -1,0 +1,66 @@
+FUNCTION_BLOCK spider
+
+VAR_INPUT
+	attack : REAL;
+END_VAR
+
+VAR_INPUT
+	venom : REAL;
+END_VAR
+
+VAR_OUTPUT
+	damage : REAL;
+END_VAR
+
+VAR_OUTPUT
+	potency : REAL;
+END_VAR
+
+
+FUZZIFY attack
+	TERM weak := (0,0) (25,1) (40,0);
+	TERM average := (35,0) (50,1) (75,0);
+	TERM strong := (60,0) (75,1) (100,0);
+END_FUZZIFY
+
+FUZZIFY venom
+	TERM empty := (0,0) (25,1) (40,0);
+	TERM average := (35,0) (50,1) (75,0);
+	TERM full := (60,0) (75,1) (100,0);
+END_FUZZIFY
+
+
+DEFUZZIFY potency
+	TERM low := (5,0) (15,1) (20,0);
+	TERM average := (15,0) (25,1) (30,0);
+	TERM high := (25,0) (30,1) (100,0);
+	
+	METHOD : COGF;		
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+DEFUZZIFY damage
+	TERM low := (5,0) (15,1) (20,0);
+	TERM average := (15,0) (25,1) (30,0);
+	TERM high := (25,0) (30,1) (100,0);
+	
+	METHOD : COG;
+	DEFAULT := 0;	
+END_DEFUZZIFY
+
+
+RULEBLOCK No1
+	AND : MIN;		
+	ACT : MIN;
+	ACCU : MAX;	
+	
+	RULE 1 : IF venom  IS low THEN potency IS low;
+	RULE 2 : IF venom  IS average THEN potency IS average;
+	RULE 3 : IF venom  IS full THEN potency IS high;
+	
+	RULE 4 : IF attack  IS weak AND potency is low THEN damage IS low;
+	RULE 5 : IF attack  IS average AND potency is average THEN damage IS average;
+	RULE 6 : IF attack  IS strong AND potency is strong THEN damage IS high;
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK

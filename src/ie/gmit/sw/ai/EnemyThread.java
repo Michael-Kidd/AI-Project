@@ -5,6 +5,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import javax.swing.JOptionPane;
+
 import net.sourceforge.jFuzzyLogic.FIS;
 
 public class EnemyThread extends Thread{
@@ -14,17 +16,15 @@ public class EnemyThread extends Thread{
 	//keep enemy pos
 	private int[] pos = new int[2];
 	private char val;
-	private FIS logic;
-	private String fileName = "resources/fuzzy/logic.fcl";
 	
+	private int venom = 10;
+	private int strength = 0;
 	
-	EnemyThread(int[] p, char v){
-		
-		logic = FIS.load(fileName, true);
+	EnemyThread(int[] p, char v, int s){
 		
 		this.pos = p;
 		this.val= v;
-		
+		this.setStrength(s);
 		
 		exec.scheduleWithFixedDelay(new Runnable() {
 			@Override
@@ -32,13 +32,14 @@ public class EnemyThread extends Thread{
 				
 				try {
 					
-					if( new ManhattanDistance().getDistance(new Node(pos[0], pos[1])) == 1 ){
-						attack(20);
+					if( new ManhattanDistance().getDistance(new Node(pos[0], pos[1])) <= 1 ){
+						attack();
 					}
 					else 
 					{
 						findPlayer();
 					}
+					
 				}
 				catch (Exception e) {
 					
@@ -50,14 +51,61 @@ public class EnemyThread extends Thread{
 		
 	}
 	
-	protected void attack(int val) {
+	protected void attack() {
 		
-		logic.setVariable("attack", val);
-		logic.evaluate();
+		FIS damageLogic = FIS.load("resources/fuzzy/damageLogic.fcl", true);
 		
-		int damage = (int)logic.getVariable("damage").getValue();
+		damageLogic.setVariable("attack", strength);
 		
-		System.out.println("attack " +damage);
+		if(venom < 0)
+			damageLogic.setVariable("venom", venom);
+		else
+			damageLogic.setVariable("venom", 0);
+		
+		damageLogic.evaluate();
+		
+		int damage = (int)damageLogic.getVariable("damage").getValue();
+		
+		try {
+		
+			ControlledSprite.getInstance().setHealth(ControlledSprite.getInstance().getHealth() - damage);
+			
+			if(venom > 0)
+				venom -= damage;
+			
+			JOptionPane.showMessageDialog(null, getSpidertype() +" Spider Dealt " + damage + " damage"
+					+ "\nYou have " +ControlledSprite.getInstance().getHealth() +" Health left");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+
+	}
+	
+	public String getSpidertype() {
+		
+		switch(val) {
+		case '6':
+			return "Black";
+		case '7':
+			return "Blue";
+		case '8':
+			return "Brown";
+		case '9':
+			return "Green";
+		case ':':
+			return "Grey";
+		case ';':
+			return "Orange";
+		case '<':
+			return "Red";
+		case '=':
+			return "Yellow";
+		default:
+			return "";
+		}
 	}
 
 	public void findPlayer() throws Exception {
@@ -106,20 +154,21 @@ public class EnemyThread extends Thread{
 	public void setVal(char val) {
 		this.val = val;
 	}
-	
-	int getDistance() throws Exception {	
-		int x2 = 0;
-		int y2 = 0;
-		
-		GameView.getInstance();
-		
-		//get players location
-		x2 = GameView.getCurrentRow();
-		y2 = GameView.getCurrentCol();
-		
-		//Using manhattan distance to determine how far each spider if from the player
-		return  Math.abs(pos[0] - x2) +  Math.abs(pos[1] - y2);
-			
+
+	public int getVenom() {
+		return venom;
+	}
+
+	public void setVenom(int venom) {
+		this.venom = venom;
+	}
+
+	public int getStrength() {
+		return strength;
+	}
+
+	public void setStrength(int strength) {
+		this.strength = strength;
 	}
 
 }

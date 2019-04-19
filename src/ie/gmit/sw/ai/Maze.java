@@ -54,7 +54,7 @@ public class Maze {
 				
 				int[] pos = {row, col};
 				
-				EnemyThread et = new EnemyThread(pos, val);
+				EnemyThread et = new EnemyThread(pos, val, 10);
 				et.start();
 				
 				counter++;

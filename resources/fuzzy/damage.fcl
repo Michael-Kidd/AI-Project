@@ -1,0 +1,53 @@
+FUNCTION_BLOCK damageoutput
+
+VAR_INPUT
+	output : REAL;
+END_VAR
+
+VAR_INPUT
+	potencyofvenom : REAL;
+END_VAR
+
+VAR_OUTPUT
+	damagedealt : REAL;
+END_VAR
+
+FUZZIFY output
+	TERM low := (0,0) (15,1) (20,0);
+	TERM average := (15,0) (25,1) (30,0);
+	TERM high := (25,0) (30,1) (100,0);
+END_FUZZIFY
+
+FUZZIFY potencyofvenom
+	TERM low := (0,0) (15,1) (20,0);
+	TERM average := (15,0) (25,1) (30,0);
+	TERM high := (25,0) (30,1) (100,0);
+END_FUZZIFY
+
+DEFUZZIFY damagedealt
+	TERM low := (0,0) (15,1) (20,0);
+	TERM average := (15,0) (25,1) (30,0);
+	TERM high := (25,0) (30,1) (100,0);
+	
+	METHOD : COG;
+	DEFAULT := 0;	
+END_DEFUZZIFY
+
+RULEBLOCK No1
+	AND : MIN;		
+	ACT : MIN;
+	ACCU : MAX;	
+	
+	RULE 1: IF output IS low AND potencyofvenom IS low THEN damagedealt is low;
+	RULE 2: IF output IS average AND potencyofvenom IS low THEN damagedealt is average;
+	RULE 3: IF output IS low AND potencyofvenom IS average THEN damagedealt is average;
+	
+	RULE 4: IF output IS average AND potencyofvenom IS average THEN damagedealt is average;
+	RULE 5: IF output IS high AND potencyofvenom IS average THEN damagedealt is average;
+	RULE 6: IF output IS average AND potencyofvenom IS high THEN damagedealt is average;
+	
+	RULE 7: IF output IS high AND potencyofvenom IS high THEN damagedealt is high;
+
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK

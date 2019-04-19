@@ -25,7 +25,7 @@ public class EnemyThread extends Thread{
 		
 		this.pos = p;
 		this.val= v;
-		this.setStrength(s);
+		this.strength = s;
 		
 		exec.scheduleWithFixedDelay(new Runnable() {
 			@Override
@@ -54,27 +54,11 @@ public class EnemyThread extends Thread{
 	
 	protected void attack() {
 		
-		FIS file = FIS.load("resources/fuzzy/damageLogic.fcl", true);
+		double attack = getAttackValue();
 		
-		file.setVariable("attack", strength);
+		double potency = getPotencyValue();
 		
-		file.evaluate();
-		
-		double attack = file.getVariable("damage").getValue();
-		
-		file.setVariable("venom", venom);
-		
-		file.evaluate();
-		
-		double potency = file.getVariable("potency").getValue();
-		
-		file.setVariable("damageOutput", attack);
-		
-		file.setVariable("potencyOfVenom", potency);
-		
-		file.evaluate();
-		
-		int damage = (int)file.getVariable("damageDealt").getValue();
+		int damage = getDamageValue(attack, potency);
 	
 		try {
 		
@@ -86,7 +70,6 @@ public class EnemyThread extends Thread{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 
 	}
 	
@@ -112,6 +95,50 @@ public class EnemyThread extends Thread{
 		default:
 			return "";
 		}
+	}
+	
+	public double getAttackValue() {
+		
+		FIS file = FIS.load("resources/fuzzy/damageLogic.fcl", true);
+		
+		FunctionBlock damageLogic = file.getFunctionBlock("AttackDamage");
+		
+		damageLogic.setVariable("attack", strength);
+		
+		damageLogic.evaluate();
+		
+		return damageLogic.getVariable("damage").getValue();
+		
+	}
+	
+	public double getPotencyValue() {
+		
+		FIS file = FIS.load("resources/fuzzy/venom.fcl", true);
+		
+		FunctionBlock damageLogic = file.getFunctionBlock("VenomPotency");
+		
+		damageLogic.setVariable("venom", venom);
+		
+		damageLogic.evaluate();
+		
+		return damageLogic.getVariable("potency").getValue();
+		
+	}
+	
+	public int getDamageValue(double attack, double potency) {
+		
+		FIS file = FIS.load("resources/fuzzy/damage.fcl", true);
+		
+		FunctionBlock damageLogic = file.getFunctionBlock("damageoutput");
+		
+		damageLogic.setVariable("output", attack);
+		
+		damageLogic.setVariable("potencyofvenom", potency);
+		
+		damageLogic.evaluate();
+		
+		return (int)damageLogic.getVariable("damagedealt").getValue();
+		
 	}
 
 	public void findPlayer() throws Exception {

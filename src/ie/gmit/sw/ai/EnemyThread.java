@@ -19,16 +19,6 @@ public class EnemyThread extends Thread{
 	
 	EnemyThread(int[] p, char v){
 		
-		try {
-			
-			fuzzyLogic();
-			
-		} catch (Exception e1) {
-			
-			e1.printStackTrace();
-		
-		}
-		
 		this.pos = p;
 		this.val= v;
 		
@@ -38,6 +28,7 @@ public class EnemyThread extends Thread{
 					
 					try {
 						
+						fuzzyLogic();
 						findPath();
 					
 					} 

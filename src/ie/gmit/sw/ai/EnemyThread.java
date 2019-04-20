@@ -106,7 +106,7 @@ public class EnemyThread extends Thread{
 	
 	public double getAttackValue() {
 		
-		FIS file = FIS.load("resources/fuzzy/damageLogic.fcl", true);
+		FIS file = FIS.load("resources/fuzzy/damage.fcl", true);
 		
 		FunctionBlock damageLogic = file.getFunctionBlock("AttackDamage");
 		
@@ -120,7 +120,7 @@ public class EnemyThread extends Thread{
 	
 	public double getPotencyValue() {
 		
-		FIS file = FIS.load("resources/fuzzy/venom.fcl", true);
+		FIS file = FIS.load("resources/fuzzy/damage.fcl", true);
 		
 		FunctionBlock damageLogic = file.getFunctionBlock("VenomPotency");
 		

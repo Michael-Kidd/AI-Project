@@ -10,13 +10,13 @@ END_VAR
 
 FUZZIFY venom
 	TERM empty := (0,0) (25,1) (40,0);
-	TERM average := (35,0) (50,1) (75,0);
-	TERM full := (60,0) (75,1) (100,0);
+	TERM average := (35,0) (70,1) (80,0);
+	TERM full := (75,1) (100,1);
 END_FUZZIFY
 
 DEFUZZIFY potency
-	TERM low := (0,0) (15,1) (25,0);
-	TERM average := (15,0) (25,1) (30,0);
+	TERM low := (0,0) (15,1) (30,0);
+	TERM average := (25,0) (50,1) (60,0);
 	TERM high := (25,0) (30,1) (100,0);
 	
 	METHOD : COG;		

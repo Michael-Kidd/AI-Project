@@ -18,7 +18,7 @@ public class EnemyThread extends Thread{
 	private int[] pos = new int[2];
 	private char val;
 	
-	private int venom = 10;
+	private int venom = 100;
 	private int strength = 0;
 	
 	EnemyThread(int[] p, char v, int s){
@@ -59,7 +59,14 @@ public class EnemyThread extends Thread{
 		double potency = getPotencyValue();
 		
 		int damage = getDamageValue(attack, potency);
-	
+		
+		if(venom > 0) {
+			venom -= damage;
+			strength -= (attack/2);
+		}
+		else 
+			venom = 0;
+		
 		try {
 		
 			ControlledSprite.getInstance().setHealth(ControlledSprite.getInstance().getHealth() - damage);
@@ -162,7 +169,7 @@ public class EnemyThread extends Thread{
 		
 		int newRow = node.x;
 		int newCol = node.y;
-		
+			
 		GameView.setMaze(pos[0], pos[1], '\u0020');
 		GameView.setMaze(newRow, newCol, val);
 

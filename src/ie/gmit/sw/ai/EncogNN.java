@@ -107,7 +107,10 @@ public class EncogNN {
 	
 	BasicNetwork createNetwork() {
 		
+		//Basic ncogg network setup
 		BasicNetwork network = new BasicNetwork();
+		
+		//Adding layers
 		network.addLayer(new BasicLayer(null, true, 4));
 		network.addLayer(new BasicLayer(new ActivationSigmoid(), false, 2));
 		network.addLayer(new BasicLayer(new ActivationSigmoid(), true, 4));
@@ -120,9 +123,13 @@ public class EncogNN {
 	
 	ResilientPropagation trainNetwork( BasicNetwork network, MLDataSet trainingSet) {
 		
+		//train the network to recognise patterns
 		ResilientPropagation train = new ResilientPropagation(network, trainingSet);
 		
+		//to control the error level
 		double minError = 0.1;
+		
+		//iterations of the trainer
 		int epoch = 1;
 		
 		do {
@@ -130,6 +137,7 @@ public class EncogNN {
 			epoch++;
 		} while (train.getError() > minError);
 		
+		//stop training
 		train.finishTraining();
 		
 		System.out.println("[INFO] training complete in " + epoch + " epochs with error=" + train.getError());
@@ -141,6 +149,7 @@ public class EncogNN {
 		
 		System.out.println("[INFO] Testing the network:");	
 		
+		//test with the training data
 		for(MLDataPair pair: trainingSet ) {
 			
 			MLData output = network.compute(pair.getInput());
@@ -155,6 +164,7 @@ public class EncogNN {
 	
 	public static int getState(int strength, int venom, int playerPos, int hidePos) {
 		
+		//variables sent from each spider
 		double[] input = {strength, venom, playerPos, hidePos};
 		
 		//System.out.println(input[0] +" " + input[1] +" " +input[2] +" " +input[3] );
@@ -165,6 +175,7 @@ public class EncogNN {
 		
 		int val = network.classify(data);
 		
+		//value to be used by the enum for the state the spider will use
 		return val;
 	}
 

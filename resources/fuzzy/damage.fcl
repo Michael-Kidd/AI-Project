@@ -1,36 +1,62 @@
+/*
+	Using Mandani inferance used instead of seguno, It could be used instead as it supports Multiple inputs and multiple outputs.
+	Instead using this method, I have used Multiple input, single output, this would be better suited as it is more scalable later as it may be needed to 
+	 
+*/
+
 FUNCTION_BLOCK damageoutput
 
+
+/*
+Value used to identify the value that the attack produces based on the spiders strength
+*/
 VAR_INPUT
 	output : REAL;
 END_VAR
 
+/*
+input for the potency of the spider venom
+*/
 VAR_INPUT
 	potencyofvenom : REAL;
 END_VAR
 
+/*
+The damage output to identify how much health to remove from the player
+*/
 VAR_OUTPUT
 	damagedealt : REAL;
 END_VAR
 
+/*
+Fuzzification rules for attack damage
+*/
 FUZZIFY output
 	TERM low := (0,0) (15,1) (20,0);
 	TERM average := (15,0) (25,1) (30,0);
 	TERM high := (25,0) (30,1) (100,0);
 END_FUZZIFY
 
+/*
+Fuzzification rules for venom potency
+*/
 FUZZIFY potencyofvenom
 	TERM low := (0,0) (15,1) (20,0);
 	TERM average := (15,0) (25,1) (30,0);
 	TERM high := (25,0) (30,1) (100,0);
 END_FUZZIFY
 
+
+/*
+DeFuzzification rules to determine how much damage will be dealt
+*/
 DEFUZZIFY damagedealt
 	TERM low := (0,0) (15,1) (20,0);
 	TERM average := (15,0) (25,1) (30,0);
 	TERM high := (25,0) (30,1) (100,0);
 	
-	METHOD : COG;
-	DEFAULT := 0;	
+	METHOD : FOM ;	/* First of Maximum*/
+	DEFAULT := 0;	/*Default value of 0, catch all*/
 END_DEFUZZIFY
 
 RULEBLOCK No1
@@ -38,6 +64,9 @@ RULEBLOCK No1
 	ACT : MIN;
 	ACCU : MAX;	
 	
+	/*
+	Rule to control the output
+	*/
 	RULE 1: IF output IS low AND potencyofvenom IS low THEN damagedealt is low;
 	RULE 2: IF output IS average AND potencyofvenom IS low THEN damagedealt is average;
 	RULE 3: IF output IS low AND potencyofvenom IS average THEN damagedealt is average;
@@ -52,28 +81,41 @@ END_RULEBLOCK
 
 END_FUNCTION_BLOCK
 
+
 FUNCTION_BLOCK AttackDamage
 
+/*
+Variable for strength of the spider
+*/
 VAR_INPUT
 	attack : REAL;
 END_VAR
 
+/*
+the output, the damage that will be based on the attack used by the spider
+*/
 VAR_OUTPUT
 	damage : REAL;
 END_VAR
 
+/*
+rules for the input
+*/
 FUZZIFY attack
 	TERM weak := (0,0) (25,1) (40,0);
 	TERM average := (35,0) (70,1) (80,0);
 	TERM strong := 	(75,1) (100,1);
 END_FUZZIFY
 
+/*
+rules for the output
+*/
 DEFUZZIFY damage
 	TERM low := (0,0) (15,1) (30,0);
 	TERM average := (25,0) (50,1) (60,0);
 	TERM high :=  (70,0) (100,1);
 	
-	METHOD : COG;
+	METHOD : COG; //center of gravity
 	DEFAULT := 0;	
 END_DEFUZZIFY
 
@@ -99,18 +141,25 @@ VAR_OUTPUT
 	potency : REAL;
 END_VAR
 
+/*
+Seguno would be a good option to use for merging the AttackDamage and the VenomPotency function blocks
+*/
 FUZZIFY venom
 	TERM empty := (0,0) (25,1) (40,0);
 	TERM average := (35,0) (70,1) (80,0);
 	TERM full := (75,1) (100,1);
 END_FUZZIFY
 
+
+/*
+Seguno would be a good option to use for merging the AttackDamage and the VenomPotency function blocks
+*/
 DEFUZZIFY potency
 	TERM low := (0,0) (15,1) (30,0);
 	TERM average := (25,0) (50,1) (60,0);
 	TERM high := (25,0) (30,1) (100,0);
 	
-	METHOD : COG;		
+	METHOD : COG;	//center of gravity	
 	DEFAULT := 0;
 END_DEFUZZIFY
 
@@ -119,6 +168,9 @@ RULEBLOCK No1
 	ACT : MIN;
 	ACCU : MAX;	
 	
+	/*
+	rules to determine the output of the venom potency
+	*/
 	RULE 1 : IF venom  IS empty THEN potency IS low;
 	RULE 2 : IF venom  IS average THEN potency IS average;
 	RULE 3 : IF venom  IS full THEN potency IS high;

@@ -130,6 +130,30 @@ public class GameRunner extends Thread implements KeyListener{
 	
 	public static void main(String[] args) throws Exception{
 		
+		new EncogNN().go();
+		
+		//These values are sometimes incorrect and it causes issues in the game
+		//it may not have been a good idea for me to use encog for the state transistion or 
+		//I need to learn how to use it more effectively.
+		//This is alot less of an issue after making the training data static and removing the singleton of the encogg class
+		//however sometime might still be attacked by a spider that isnt there, as encog has predicted a wrong value
+		
+		int val = 0; 
+		val = EncogNN.getState(0, 0, 0, 0); // for testing // Should return a 2 - HIDE
+		System.out.println(val);
+		val = EncogNN.getState(1, 1, 0, 0); // for testing // should return a 0 - CHASE
+		System.out.println(val);
+		val = EncogNN.getState(0, 0, 0, 0); // for testing // should return a 2 - HIDE
+		System.out.println(val);
+		val = EncogNN.getState(0, 0, 0, 0); // for testing // Should return a 2 - HIDE
+		System.out.println(val);
+		val = EncogNN.getState(1, 1, 1, 0); // for testing // should return a 1 - ATTACK //THIS Will have a threading issue
+		System.out.println(val);
+		val = EncogNN.getState(0, 0, 0, 1); // for testing //should return a 3 - HEAL
+		System.out.println(val);
+		
+		
+		//Run the view in another thread from the start
 		new Thread(new GameRunner());
 	
 	}

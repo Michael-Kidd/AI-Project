@@ -15,7 +15,7 @@ public class ManhattanDistance {
 
 		for (Node n : queue) {
 
-			if (getDistance(n) < getDistance(currentNode)) {
+			if (getDistanceFromPlayer(n) < getDistanceFromPlayer(currentNode)) {
 				currentNode = n;
 			}
 
@@ -24,7 +24,7 @@ public class ManhattanDistance {
 		return currentNode;
 	}
 
-	int getDistance(Node currentNode) throws Exception {
+	int getDistanceFromPlayer(Node currentNode) throws Exception {
 
 		int x2 = 0;
 		int y2 = 0;
@@ -34,6 +34,20 @@ public class ManhattanDistance {
 		// get players location
 		x2 = GameView.getCurrentRow();
 		y2 = GameView.getCurrentCol();
+
+		// Using Manhattan distance to determine how far each spider if from the player
+		return Math.abs(currentNode.x - x2) + Math.abs(currentNode.y - y2);
+
+	}
+	
+	int getDistanceFromHidePosition(Node currentNode) throws Exception {
+
+		int x2 = 0;
+		int y2 = 0;
+
+		// get players location
+		y2 = 10;
+		x2 = 10;
 
 		// Using Manhattan distance to determine how far each spider if from the player
 		return Math.abs(currentNode.x - x2) + Math.abs(currentNode.y - y2);

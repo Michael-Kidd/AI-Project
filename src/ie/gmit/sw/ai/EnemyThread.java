@@ -17,38 +17,103 @@ public class EnemyThread extends Thread{
 	//keep enemy pos
 	private int[] pos = new int[2];
 	private char val;
+	private int startX;
+	private int startY;
+	
+	public enum Action {
+		
+		Chase(0), Attack(1), Hide(2), Heal(3);
+
+		private Action(int val) {
+			this.value = val;
+		}
+
+		private int value;
+
+		public int getValue() {
+			return value;
+		}
+	}
+	
+	private Action state;
 	
 	private int venom = 100;
-	private int strength = 0;
+	private int strength = 100;
 	
-	EnemyThread(int[] p, char v, int s){
+	private int nextToPlayer = 0;
+	private int nextToHidePosition = 0;
+	
+	EnemyThread(int[] p, char v){
 		
 		this.pos = p;
 		this.val= v;
-		this.strength = s;
+		
+		this.setStartX(pos[0]);
+		this.setStartY(pos[1]);
 		
 		exec.scheduleWithFixedDelay(new Runnable() {
 			@Override
 			public void run() {
-				
-				try {
-					
-					if( new ManhattanDistance().getDistance(new Node(pos[0], pos[1])) <= 1 ){
-						attack();
-					}
-					else 
-					{
-						findPlayer();
+
+					try {
+						state = checkState();
+					} catch (Exception e1) {
+						e1.printStackTrace();
 					}
 					
-				}
-				catch (Exception e) {
+					switch(state) {
+						case Attack:
+							attack();
+							break;
+						case Chase:
+							try {
+								findPlayer();
+							} catch (Exception e) {
+							}
+							break;
+						case Hide:
+							try {
+								hide();
+							} catch (Exception e) {
+							}
+							break;
+						case Heal:
+							heal();
+							break;
+						default:	
+					}
 					
-				}
-				
 			}
 			
 		}, 0, 2, TimeUnit.SECONDS);
+		
+	}
+	
+	public Action checkState() throws Exception {
+		
+		int hasStrength = 0;
+		int hasVenom = 0;
+		
+		if(strength > 0)
+			hasStrength = 1;
+		else
+			hasVenom = 0;
+		
+		if(venom > 0)
+			hasVenom = 1;
+		else
+			hasVenom = 0;
+		
+		if(new ManhattanDistance().getDistanceFromPlayer(new Node(pos[0], pos[1])) <= 1 ) {
+			nextToPlayer = 1;
+		}
+		else {
+			nextToPlayer = 0;
+		}
+		
+		int value = EncogNN.getState(hasStrength, hasVenom, nextToPlayer, nextToHidePosition);
+
+		return Action.values()[value];
 		
 	}
 	
@@ -60,10 +125,8 @@ public class EnemyThread extends Thread{
 		
 		int damage = getDamageValue(attack, potency);
 		
-		if(venom > 0) {
+		if(venom > 0)
 			venom -= damage;
-			strength -= (attack/2);
-		}
 		else 
 			venom = 0;
 		
@@ -72,7 +135,8 @@ public class EnemyThread extends Thread{
 			ControlledSprite.getInstance().setHealth(ControlledSprite.getInstance().getHealth() - damage);
 			
 			JOptionPane.showMessageDialog(null, getSpidertype() +" Spider Dealt " + damage + " damage"
-					+ "\nYou have " +ControlledSprite.getInstance().getHealth() +" Health left");
+					+ "\nYou have " +ControlledSprite.getInstance().getHealth() +" Health left \n Spider has " +venom +" Venom\nSpider has "
+							+strength +" Strength");
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -80,28 +144,11 @@ public class EnemyThread extends Thread{
 
 	}
 	
-	public String getSpidertype() {
-		
-		switch(val) {
-		case '6':
-			return "Black";
-		case '7':
-			return "Blue";
-		case '8':
-			return "Brown";
-		case '9':
-			return "Green";
-		case ':':
-			return "Grey";
-		case ';':
-			return "Orange";
-		case '<':
-			return "Red";
-		case '=':
-			return "Yellow";
-		default:
-			return "";
-		}
+	private void heal() {
+		if(strength < 100)
+			strength++;
+		if(venom < 100)
+			venom++;
 	}
 	
 	public double getAttackValue() {
@@ -162,8 +209,17 @@ public class EnemyThread extends Thread{
 		move(pos[0], pos[1], node, val);
 		
 	}
+	
+	public void hide() throws Exception {
+		
+		
+	}
         
 	public void move(int row, int col, Node node, char val) throws Exception {
+		
+		
+		if(strength > 0)
+			strength --;
 		
 		GameView.getInstance();
 		
@@ -209,6 +265,62 @@ public class EnemyThread extends Thread{
 
 	public void setStrength(int strength) {
 		this.strength = strength;
+	}
+	
+	public String getSpidertype() {
+		
+		switch(val) {
+		case '6':
+			return "Black";
+		case '7':
+			return "Blue";
+		case '8':
+			return "Brown";
+		case '9':
+			return "Green";
+		case ':':
+			return "Grey";
+		case ';':
+			return "Orange";
+		case '<':
+			return "Red";
+		case '=':
+			return "Yellow";
+		default:
+			return "";
+		}
+	}
+
+	public int getNextToHidePosition() {
+		return nextToHidePosition;
+	}
+
+	public void setNextToHidePosition(int nextToHidePosition) {
+		this.nextToHidePosition = nextToHidePosition;
+	}
+
+	public int getNextToPlayer() {
+		return nextToPlayer;
+	}
+
+	public void setNextToPlayer(int nextToPlayer) {
+		this.nextToPlayer = nextToPlayer;
+	}
+
+	public int getStartY() {
+		return startY;
+	}
+
+	public void setStartY(int startY) {
+		this.startY = startY;
+	}
+
+	public int getStartX() {
+		return startX;
+	}
+
+	public void setStartX(int startX) {
+		this.startX = startX;
 	}
 
 }
